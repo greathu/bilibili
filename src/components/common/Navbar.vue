@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-27 22:20:36
- * @LastEditTime: 2020-07-27 22:52:51
+ * @LastEditTime: 2020-07-29 10:54:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \bilibili\src\components\common\Navbar.vue
@@ -9,7 +9,7 @@
 <template>
   <div class="navbar">
     <div class="logo">
-      <img src="@/assets/logo.png" alt="" />
+      <img src="@/assets/logo.png" alt @click="$router.push('/')" />
     </div>
     <div>
       <p>
@@ -18,13 +18,31 @@
       </p>
     </div>
     <div>
-      <img src="@/assets/default_img.jpg" alt="" />
+      <img :src="imgUrl" alt @click="$router.push('/edit')" v-if="imgUrl" />
+      <img src="@/assets/default_img.jpg" alt @click="$router.push('/login')" v-else />
       <p>下载App</p>
     </div>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      imgUrl: "",
+    };
+  },
+  methods: {
+    async NavInit() {
+      if (localStorage.getItem("token")) {
+        const res = await this.$http.get("/user/" + localStorage.getItem("id"));
+        this.imgUrl = res.data[0].user_img;
+      }
+    },
+  },
+  mounted() {
+    this.NavInit();
+  },
+};
 </script>
 <style lang="scss" scoped>
 .navbar {

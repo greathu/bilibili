@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-27 16:28:34
- * @LastEditTime: 2020-07-27 22:03:05
+ * @LastEditTime: 2020-07-28 16:32:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \bilibili\src\main.js
@@ -16,6 +16,8 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 import router from "./router/index";
 
+//引入css
+import '@/assets/style.css'
 
 //引入vant组件
 import Vant from 'vant';

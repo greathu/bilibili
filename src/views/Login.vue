@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-27 20:08:11
- * @LastEditTime: 2020-07-27 22:11:04
+ * @LastEditTime: 2020-07-28 11:40:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \bilibili\src\components\views\register.vue
 -->
 <template>
   <div>
-    <login-top Text="登录bilibili"></login-top>
+    <login-top text="登录bilibili"></login-top>
     <login-text
       label="账号"
       placeholder="请输入账号"
@@ -33,30 +33,36 @@ export default {
     return {
       model: {
         username: "",
-        password: ""
-      }
+        password: "",
+      },
     };
   },
   components: {
     "login-top": LoginTop,
     "login-text": LoginText,
-    "login-btn": LoginBtn
+    "login-btn": LoginBtn,
   },
   methods: {
     async reginsterSubmit() {
-      let rulg = /^.{6,16}/;
+      let rulg = /^.{6,16}$/;
       if (rulg.test(this.model.username) && rulg.test(this.model.password)) {
         const res = await this.$http.post("/login", this.model);
         this.$msg.fail(res.data.msg);
-        /*   localStorage.setItem("token", res.data.objtoken);
-        localStorage.setItem("id", res.data.id); */
+        if (res.data.code == 301 || res.data.code == 302) {
+          return;
+        }
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("id", res.data.id);
         setTimeout(() => {
           this.$router.push("/userinfo");
-        }, 2000);
+        }, 1000);
       } else {
-        this.$msg.fail(res.data.msg);
+        this.$msg.fail("格式不正确,请重新输入!");
       }
-    }
-  }
+    },
+  },
 };
 </script>
+
+<style>
+</style>
